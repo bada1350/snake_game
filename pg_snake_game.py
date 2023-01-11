@@ -16,7 +16,7 @@ PLAYER_LIFE = 3
 list_snake_pos = []                 # 뱀 몸통의 전체좌표가 저장되는 리스트
 x_dir = 0                           # 뱀 이동 방향(x)
 y_dir = 0                           # 뱀 이동 방향(y)
-count = 0
+count = 0                           # 연속 충돌 방지
 
 GAME_INTRO = True
 GAME_RUNNING = True
@@ -118,7 +118,7 @@ def reset_apple():
         A_x = random.randint(0, CS - 1)
         A_y = random.randint(0, CS - 1)
 
-# 게임 안내 화면 그리기
+# 게임 시작 화면 그리기
 def draw_intro():
     GAME_SCREEN.fill((0, 0, 0))
     game_name_txt = FONT_40.render("스네이크 게임", True, (255, 255, 255))
@@ -135,7 +135,7 @@ def draw_intro():
     GAME_SCREEN.blit(how_to_play_txt_3, (50, 270))
     GAME_SCREEN.blit(game_start_txt, (50, 350))
 
-# 게임 엔딩 화면 그리기
+# 게임 결과 화면 그리기
 def draw_ending():
     GAME_SCREEN.fill((0, 0, 0))
     game_score_txt_1 = FONT_40.render("YOUR SCORE", True, (255, 255, 0))
