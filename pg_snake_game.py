@@ -10,10 +10,10 @@ A_x = random.randint(0, CS - 1)     # Apple_X, Y // 사과 좌표
 A_y = random.randint(0, CS - 1)
 P_x = 10                            # Player_X, Y
 P_y = 10
-SL = 5                              # 뱀 몸통의 최대 길이(사과를 먹으면 증가함)
+SL = 5                              # 뱀의 길이(사과를 먹으면 증가함)
 SCORE = 0
 PLAYER_LIFE = 3
-list_snake_pos = []                 # 뱀 몸통의 전체좌표가 저장되는 리스트
+list_snake_pos = []                 # 뱀의 좌표가 저장되는 리스트
 x_dir = 0                           # 뱀 이동 방향(x)
 y_dir = 0                           # 뱀 이동 방향(y)
 count = 0                           # 연속 충돌 방지
@@ -43,10 +43,12 @@ def draw_player_life():
 # 뱀(플레이어) 그리기
 def draw_snake():
     for idx, s in enumerate(list_snake_pos):
+        # 뱀의 머리
         if idx == 0:
             pg.draw.rect(GAME_SCREEN, (0, 255, 0), (s[0] * CS, s[1] * CS, CS, CS))
             pg.draw.circle(GAME_SCREEN, (0, 0, 0), (s[0] * CS + 5, s[1] * CS + 5), 3)
             pg.draw.circle(GAME_SCREEN, (0, 0, 0), (s[0] * CS + 15, s[1] * CS + 5), 3)
+        # 뱀의 몸통
         else:
             pg.draw.rect(GAME_SCREEN, (0, 255, 0), (s[0] * CS, s[1] * CS, CS, CS))
 
@@ -61,10 +63,10 @@ def move_snake():
     P_x += x_dir
     P_y += y_dir
     
-    # 뱀이 이동하면 뱀의 좌표를 리스트의 첫번째 요소로 저장
+    # 뱀이 이동하면 뱀의 머리 좌표를 리스트의 첫 번째 요소로 저장
     list_snake_pos.insert(0, (P_x, P_y))
     
-    # 뱀 몸통의 최대 길이(SL)보다 꼬리가 길어지면 꼬리를 버림
+    # 뱀의 길이(SL)보다 꼬리가 길어지면 꼬리를 버림
     while (len(list_snake_pos) > SL):
         list_snake_pos.pop()
     
@@ -83,14 +85,14 @@ def move_snake():
     else:
         pass
 
-    # 뱀이 사과를 먹으면, 뱀 몸통의 최대 길이와 점수를 1씩 증가 & 사운드 재생 & 랜덤한 위치에 사과 생성
+    # 뱀이 사과를 먹으면, 뱀의 길이와 점수를 1씩 증가 & 사운드 재생 & 랜덤한 위치에 사과 생성
     if (P_x, P_y) == (A_x, A_y):
         SL += 1
         SCORE += 1
         APPLE_SND.play()
         reset_apple()
 
-    # 뱀이 자신의 몸과 부딪히면, 뱀 몸통의 최대 길이를 기본값 5로 리셋하고 플레이어의 목숨을 1 감소 & 사운드 재생
+    # 뱀이 자신의 몸과 부딪히면, 뱀의 길이를 기본값(5)으로 리셋하고 플레이어의 목숨을 1 감소 & 사운드 재생
     if GAME_START == True and count >= 10:
         for s in list_snake_pos[1:]:
             if list_snake_pos[0] == s:
@@ -111,7 +113,7 @@ def move_snake():
 
     count += 1
 
-# 뱀의 좌표와 사과의 좌표가 같으면(= 뱀이 사과를 먹으면) 랜덤한 위치에 사과를 생성
+# 뱀 머리의 좌표와 사과의 좌표가 같으면(= 뱀이 사과를 먹으면) 랜덤한 위치에 사과를 생성
 def reset_apple():
     global A_x, A_y
     if (P_x, P_y) == (A_x, A_y):
